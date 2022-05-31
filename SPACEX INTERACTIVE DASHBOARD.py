@@ -74,9 +74,13 @@ def get_pie_chart(entered_site):
 def get_scatter_chart(entered_site, entered_payload):
     print(entered_payload)
     if entered_site == 'ALL':
-        fig = px.scatter(spacex_df,
-        x = spacex_df['Payload Mass (kg)'], 
-        y = spacex_df['class'], 
+        dls = spacex_df
+        dls = dls[dls['Payload Mass (kg)'] > entered_payload[0]]
+        dls = dls[dls['Payload Mass (kg)'] < entered_payload[1]]
+        dls.reset_index(inplace=True)
+        fig = px.scatter(dls,
+        x = dls['Payload Mass (kg)'], 
+        y = dls['class'], 
         color='Booster Version', 
         title='Correlation between payload and success for sites')
         return dcc.Graph(figure=fig)
